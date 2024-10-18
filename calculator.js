@@ -3,13 +3,17 @@ function add(numbers) {
         return 0;
     }
 
-    // Replace newlines with commas
-    const sanitizedNumbers = numbers.replace(/\n/g, ',');
-    
-    // Handle single number
-    if (!isNaN(sanitizedNumbers)) {
-        return parseInt(sanitizedNumbers, 10);
+    let delimiter = ","; // Default delimiter
+
+    // Check for custom delimiter
+    if (numbers.startsWith("//")) {
+        const delimiterLineEnd = numbers.indexOf("\n");
+        delimiter = numbers.substring(2, delimiterLineEnd); // Extract custom delimiter
+        numbers = numbers.substring(delimiterLineEnd + 1); // Get the actual numbers string
     }
+
+    // Replace newlines and custom delimiters with commas
+    const sanitizedNumbers = numbers.replace(new RegExp(`[\\n${delimiter}]`, 'g'), ',');
 
     // Split numbers by commas and handle multiple numbers
     const numberArray = sanitizedNumbers.split(",").map(num => parseInt(num, 10));
