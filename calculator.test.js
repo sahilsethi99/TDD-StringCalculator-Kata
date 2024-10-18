@@ -19,3 +19,7 @@ test('should return the sum when newlines are used as delimiters', () => {
 test('should return the sum when a custom delimiter is used', () => {
     expect(add("//;\n1;2;3")).toBe(6);
 });
+
+test('should throw an error when a negative number is passed', () => {
+    expect(() => add("1,-2,3")).toThrow("Negative numbers not allowed: -2");
+});
