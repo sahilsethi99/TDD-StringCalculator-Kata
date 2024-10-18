@@ -25,6 +25,7 @@ function add(numbers) {
     }
 
     return numberArray.reduce((sum, num) => sum + num, 0);
+
 }
 
 module.exports = { add };
