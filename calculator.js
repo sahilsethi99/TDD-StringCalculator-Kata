@@ -2,7 +2,7 @@ function add(numbers) {
     if (numbers === "") {
         return 0;
     }
-
+    
     let delimiter = ","; // Default delimiter
 
     // Check for custom delimiter
@@ -15,8 +15,15 @@ function add(numbers) {
     // Replace newlines and custom delimiters with commas
     const sanitizedNumbers = numbers.replace(new RegExp(`[\\n${delimiter}]`, 'g'), ',');
 
-    // Split numbers by commas and handle multiple numbers
-    const numberArray = sanitizedNumbers.split(",").map(num => parseInt(num, 10));
+    // Split numbers by commas
+    const numberArray = sanitizedNumbers.split(",").map(num => {
+        const parsedNum = parseInt(num, 10);
+        // Check for NaN values and throw an error for non-numeric inputs
+        if (isNaN(parsedNum)) {
+            throw new Error(`Invalid input: ${num}`);
+        }
+        return parsedNum;
+    });
 
     // Check for negative numbers
     const negativeNumbers = numberArray.filter(num => num < 0);
