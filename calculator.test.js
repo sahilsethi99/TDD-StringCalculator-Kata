@@ -23,3 +23,7 @@ test('should return the sum when a custom delimiter is used', () => {
 test('should throw an error when a negative number is passed', () => {
     expect(() => add("1,-2,3")).toThrow("Negative numbers not allowed: -2");
 });
+
+test('should throw an error when multiple negative numbers are passed', () => {
+    expect(() => add("1,-2,-3")).toThrow("Negative numbers not allowed: -2, -3");
+});
