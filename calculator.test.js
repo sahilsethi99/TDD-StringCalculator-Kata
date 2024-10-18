@@ -27,3 +27,7 @@ test('should throw an error when a negative number is passed', () => {
 test('should throw an error when multiple negative numbers are passed', () => {
     expect(() => add("1,-2,-3")).toThrow("Negative numbers not allowed: -2, -3");
 });
+
+test('should throw an error when a non-numeric string is passed', () => {
+    expect(() => add("abc")).toThrow("Invalid input: abc");
+});
