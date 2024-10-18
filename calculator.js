@@ -1,38 +1,48 @@
+/**
+ * Adds a string of numbers and returns the sum, supporting custom delimiters.
+ * 
+ * @param {string} numbers - A string of comma-separated or custom-delimited numbers.
+ * @returns {number} The sum of the numbers.
+ * @throws {Error} Throws an error for invalid inputs and negative numbers.
+ */
 function add(numbers) {
-    if (numbers === "") {
-        return 0;
-    }
-    
-    let delimiter = ","; // Default delimiter
+    if (numbers === "") return 0; // Return 0 for empty input
 
-    // Check for custom delimiter
+    const { delimiter, numbersString } = extractDelimiter(numbers); // Extract delimiter
+    const numberArray = parseNumbers(sanitizeInput(numbersString, delimiter)); // Parse numbers
+
+    checkForNegativeNumbers(numberArray); // Check for negatives
+
+    return numberArray.reduce((sum, num) => sum + num, 0); // Return the sum
+}
+
+function extractDelimiter(numbers) {
+    let delimiter = ","; // Default delimiter
     if (numbers.startsWith("//")) {
         const delimiterLineEnd = numbers.indexOf("\n");
         delimiter = numbers.substring(2, delimiterLineEnd); // Extract custom delimiter
-        numbers = numbers.substring(delimiterLineEnd + 1); // Get the actual numbers string
+        numbers = numbers.substring(delimiterLineEnd + 1); // Get the numbers string
     }
+    return { delimiter, numbersString: numbers };
+}
 
-    // Replace newlines and custom delimiters with commas
-    const sanitizedNumbers = numbers.replace(new RegExp(`[\\n${delimiter}]`, 'g'), ',');
+function sanitizeInput(numbersString, delimiter) {
+    return numbersString.replace(new RegExp(`[\\n${delimiter}]`, 'g'), ','); // Replace delimiters
+}
 
-    // Split numbers by commas
-    const numberArray = sanitizedNumbers.split(",").map(num => {
-        const parsedNum = parseInt(num, 10);
-        // Check for NaN values and throw an error for non-numeric inputs
-        if (isNaN(parsedNum)) {
-            throw new Error(`Invalid input: ${num}`);
-        }
+function parseNumbers(numbersString) {
+    return numbersString.split(",").map(num => {
+        const parsedNum = parseInt(num, 10); // Parse each number
+        if (isNaN(parsedNum)) throw new Error(`Invalid input: ${num}`); // Check for NaN
         return parsedNum;
     });
+}
 
-    // Check for negative numbers
+function checkForNegativeNumbers(numberArray) {
     const negativeNumbers = numberArray.filter(num => num < 0);
     if (negativeNumbers.length > 0) {
-        throw new Error(`Negative numbers not allowed: ${negativeNumbers.join(", ")}`);
+        throw new Error(`Negative numbers not allowed: ${negativeNumbers.join(", ")}`); // Throw if negatives
     }
-
-    return numberArray.reduce((sum, num) => sum + num, 0);
-
 }
 
 module.exports = { add };
