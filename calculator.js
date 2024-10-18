@@ -17,6 +17,13 @@ function add(numbers) {
 
     // Split numbers by commas and handle multiple numbers
     const numberArray = sanitizedNumbers.split(",").map(num => parseInt(num, 10));
+
+    // Check for negative numbers
+    const negativeNumbers = numberArray.filter(num => num < 0);
+    if (negativeNumbers.length > 0) {
+        throw new Error(`Negative numbers not allowed: ${negativeNumbers.join(", ")}`);
+    }
+
     return numberArray.reduce((sum, num) => sum + num, 0);
 }
 
